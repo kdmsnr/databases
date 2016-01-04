@@ -6,12 +6,12 @@
 # We make no guarantees that this code is fit for any purpose. 
 # Visit http://www.pragmaticprogrammer.com/titles/rwdata for more book information.
 #---
-
+include Java
 require 'time'
-
-import 'org.apache.hadoop.hbase.client.HTable'
-import 'org.apache.hadoop.hbase.client.Put'
-import 'javax.xml.stream.XMLStreamConstants'
+import org.apache.hadoop.hbase.HBaseConfiguration
+import org.apache.hadoop.hbase.client.HTable
+import org.apache.hadoop.hbase.client.Put
+import javax.xml.stream.XMLStreamConstants
 
 def jbytes( *args )
   args.map { |arg| arg.to_s.to_java_bytes }
@@ -24,7 +24,8 @@ document = nil # (1)
 buffer = nil
 count = 0
 
-table = HTable.new( @hbase.configuration, 'wiki' )
+conf = HBaseConfiguration.create
+table = HTable.new( conf, 'wiki' )
 table.setAutoFlush( false ) # (2)
 
 while reader.has_next
