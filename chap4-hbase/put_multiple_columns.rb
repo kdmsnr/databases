@@ -6,14 +6,17 @@
 # We make no guarantees that this code is fit for any purpose. 
 # Visit http://www.pragmaticprogrammer.com/titles/rwdata for more book information.
 #---
-import 'org.apache.hadoop.hbase.client.HTable'
-import 'org.apache.hadoop.hbase.client.Put'
+include Java
+import org.apache.hadoop.hbase.HBaseConfiguratio
+import org.apache.hadoop.hbase.client.HTable
+import org.apache.hadoop.hbase.client.Put
 
 def jbytes( *args )
   args.map { |arg| arg.to_s.to_java_bytes }
 end
 
-table = HTable.new( @hbase.configuration, "wiki" )
+conf  = HBaseConfiguration.create
+table = HTable.new( conf, "wiki" )
 
 p = Put.new( *jbytes( "Home" ) )
 
@@ -23,3 +26,4 @@ p.add( *jbytes( "revision", "comment", "my first edit" ) )
 
 table.put( p )
 
+# $ hbase org.jruby.Main put_multiple_columns.rb
